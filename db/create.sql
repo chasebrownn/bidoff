@@ -1,3 +1,6 @@
+DROP SCHEMA Public CASCADE;
+CREATE SCHEMA Public;
+
 CREATE TABLE Users (
     user_id SERIAL NOT NULL,
     password VARCHAR(50),
@@ -27,9 +30,10 @@ CREATE TABLE Items (
     
     -- key
     PRIMARY KEY (item_id)
-)
+);
 
 CREATE TABLE Auctions (
+    auction_id SERIAL NOT NULL,
     user_id SERIAL NOT NULL,
     item_id SERIAL NOT NULL,
     -- auction info
@@ -37,25 +41,22 @@ CREATE TABLE Auctions (
     min_bid FLOAT, -- float in dollars
     inst_buy_enabled BOOLEAN,
     inst_buy_price FLOAT,
-    location POINT,
     -- key
     FOREIGN KEY (user_id) REFERENCES Users(user_id),
     FOREIGN KEY (item_id) REFERENCES Items(item_id),
-    PRIMARY KEY (user_id, item_id)
-)
+    PRIMARY KEY (auction_id)
+);
 
 CREATE TABLE Bids (
     bider_id SERIAL NOT NULL,
-    seller_id SERIAL NOT NULL,
-    item_id SERIAL NOT NULL,
+    auction_id SERIAL NOT NULL,
     -- bid info
     bid_price FLOAT,
     -- key
     FOREIGN KEY (bider_id) REFERENCES Users(user_id),
-    FOREIGN KEY (seller_id) REFERENCES Users(user_id),
-    FOREIGN KEY (item_id) REFERENCES Items(item_id),
-    PRIMARY KEY (bider_id, seller_id, item_id)
-)
+    FOREIGN KEY (auction_id) REFERENCES Auctions(auction_id),
+    PRIMARY KEY (bider_id, auction_id)
+);
 
 CREATE TABLE Purchases (
     user_id INT NOT NULL,
@@ -67,4 +68,4 @@ CREATE TABLE Purchases (
     FOREIGN KEY (user_id) REFERENCES Users(user_id),
     FOREIGN KEY (item_id) REFERENCES Items(item_id),
     PRIMARY KEY (user_id, item_id)
-)
+);
