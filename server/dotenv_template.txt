@@ -1,0 +1,8 @@
+In order to connect to a database, fill out the following 
+template and place it in a file called .env in this directory
+
+DB_USERNAME=bid-off-server
+DB_PASSWORD=cse412
+DB_HOST=localhost
+DB_PORT=8888
+DB_NAME=bid-off-test
