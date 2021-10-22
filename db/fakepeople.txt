@@ -1,0 +1,10 @@
+password, firstname, lastname, email, True, +14155552671, true
+
+'1234', 'Henry', 'OM', 'hoscannl@asu.edu', TRUE, '', FALSE
+
+'oash5ga4I', 'Doyle', 'Garner', 'pp970u+5xcia77d8i8wk@sharklasers.com', TRUE, '+14155552671', TRUE, '2040 Barfield Lane, Indianapolis, IN, 46278'
+'lokoo3Nee', 'Jean', 'Allen', 'pp970u+5xcia77d8i8wk@sharklasers.com', TRUE, '+14155552671', TRUE, '2040 Barfield Lane, Indianapolis, IN, 46278'
+'Oe7wahBae', 'Erick', 'Vera', 'pp970u+5xcia77d8i8wk@sharklasers.com', TRUE, '+14155552671', TRUE, '2040 Barfield Lane, Indianapolis, IN, 46278'
+'quahPi0eePee', 'Mary', 'Solva', 'pp970u+5xcia77d8i8wk@sharklasers.com', TRUE, '+14155552671', TRUE, '2040 Barfield Lane, Indianapolis, IN, 46278'
+'fo2Viek7oor', 'Clara', 'Woods', 'pp970u+5xcia77d8i8wk@sharklasers.com', TRUE, '+14155552671', TRUE, '2040 Barfield Lane, Indianapolis, IN, 46278'
+

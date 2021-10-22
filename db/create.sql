@@ -11,8 +11,9 @@ CREATE TABLE Users (
 
     -- phone number
     -- [+][country code][subscriber number] ex. +14155552671 for (415)555-2671
-    phone_numer VARCHAR(11),
+    phone_number VARCHAR(12),
     phone_number_verified BOOLEAN,
+    address VARCHAR(1000),
     -- key
     PRIMARY KEY (user_id)
 );
