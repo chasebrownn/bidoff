@@ -1,7 +1,7 @@
 -- this file is for writing out all of the insertions to fill the db with dummy data
 -- dummy users
 INSERT INTO Users (user_id, password, first_name, last_name, email, email_verified, phone_number, phone_number_verified, address) VALUES 
-(1, '1234', 'Henry', 'OM', 'hoscannl@asu.edu', TRUE, '', FALSE, 'Tempe, AZ'), -- 1
+(1, '1234', 'Henry', 'OM', 'email@gmail.com', TRUE, '', FALSE, 'Tempe, AZ'), -- 1
 (2, 'oash5ga4I', 'Doyle', 'Garner', 'pp970u+5xcia77d8i8wk@sharklasers.com', TRUE, '+14155552671', TRUE, '2040 Barfield Lane, Indianapolis, IN, 46278'), -- 2
 (3, 'lokoo3Nee', 'Jean', 'Allen', 'pp970u+5xcia77d8i8wk@sharklasers.com', TRUE, '+14155552671', TRUE, '2040 Barfield Lane, Indianapolis, IN, 46278'), -- 3
 (4, 'Oe7wahBae', 'Erick', 'Vera', 'pp970u+5xcia77d8i8wk@sharklasers.com', TRUE, '+14155552671', TRUE, '2040 Barfield Lane, Indianapolis, IN, 46278'), -- 4
