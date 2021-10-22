@@ -32,6 +32,20 @@ CREATE TABLE Items (
     PRIMARY KEY (item_id)
 );
 
+CREATE TABLE Tags (
+    tag_id SERIAL NOT NULL,
+    name VARCHAR(20),
+    PRIMARY KEY (tag_id)
+);
+
+CREATE TABLE TagedItems (
+    tag_id SERIAL,
+    item_id SERIAL,
+    FOREIGN KEY (tag_id) REFERENCES Tags(tag_id),
+    FOREIGN KEY (item_id) REFERENCES Items(item_id),
+    PRIMARY KEY (tag_id, item_id)
+);
+
 CREATE TABLE Auctions (
     auction_id SERIAL NOT NULL,
     user_id SERIAL NOT NULL,
