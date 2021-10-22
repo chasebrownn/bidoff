@@ -33,5 +33,6 @@ INSERT INTO Bids (bider_id, auction_id , bid_price) VALUES
 (4, 3 , 110.00);
 
 -- dummy purchases
-
-
+INSERT INTO Purchases (user_id, item_id, purchase_datetime, purchase_price) VALUES
+(1, 4, '2018-4-19 10:35:0.0', 550.00),
+(6, 5, '2022-5-28 20:13:0.0', 35.00);

@@ -69,3 +69,4 @@ CREATE TABLE Purchases (
     FOREIGN KEY (item_id) REFERENCES Items(item_id),
     PRIMARY KEY (user_id, item_id)
 );
+
