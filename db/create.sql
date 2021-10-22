@@ -23,7 +23,7 @@ CREATE TABLE Items (
     -- info
     title VARCHAR(50),
     description VARCHAR(1000),
-    image_link VARCHAR(50),
+    image_link VARCHAR(1000),
     
     -- key
     PRIMARY KEY (item_id)
