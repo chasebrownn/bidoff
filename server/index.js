@@ -19,7 +19,8 @@ app.use(express.json())
 // get all auctions
 app.get("/auctions", async (req, res) => {
     try {
-        const allTodos = await pool.query("SELECT * FROM Auctions")
+        //const allTodos = await pool.query("SELECT * FROM Auctions")
+        const allTodos = await pool.query("select * FROM auctions, items where auctions.item_id = items.item_id")
         res.json(allTodos.rows)
     } catch (err) {
         res.send("error")
