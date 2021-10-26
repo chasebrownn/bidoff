@@ -18,32 +18,32 @@ INSERT INTO Items (item_id, title, description, image_link) VALUES
 
 -- tags
 INSERT INTO Tags (tag_id, name) VALUES
-(1, 'Arts & Entertainment')
-(2, 'Software')
-(3, 'Vehicles & Parts')
-(4, 'Sporting Goods')
-(5, 'Health & Beauty')
-(6, 'Baby & Toddler')
-(7, 'Home & Garden')
-(8, 'Religious & Ceremonial')
-(9, 'Business & Industrial')
-(10, 'Media')
-(11, 'Mature')
-(12, 'Food, Beverages & Tobacco')
-(13, 'Electronics')
-(14, 'Office Supplies')
-(15, 'Apparel & Accessories')
-(16, 'Luggage & Bags')
-(17, 'Animals & Pet Supplies')
-(18, 'Toys & Games')
-(19, 'Hardware')
-(20, 'Cameras & Optics')
+(1, 'Arts & Entertainment'),
+(2, 'Software'),
+(3, 'Vehicles & Parts'),
+(4, 'Sporting Goods'),
+(5, 'Health & Beauty'),
+(6, 'Baby & Toddler'),
+(7, 'Home & Garden'),
+(8, 'Religious & Ceremonial'),
+(9, 'Business & Industrial'),
+(10, 'Media'),
+(11, 'Mature'),
+(12, 'Food, Beverages & Tobacco'),
+(13, 'Electronics'),
+(14, 'Office Supplies'),
+(15, 'Apparel & Accessories'),
+(16, 'Luggage & Bags'),
+(17, 'Animals & Pet Supplies'),
+(18, 'Toys & Games'),
+(19, 'Hardware'),
+(20, 'Cameras & Optics'),
 (21, 'Furniture')
-(22, 'Dog'), -- 1
-(23, 'Baseball'), -- 2
-(24, 'Food'), -- 3
-(25, 'Costume'), -- 4
-(26, 'Outdoors'); -- 5
+(22, 'Dog'),
+(23, 'Baseball'),
+(24, 'Food'),
+(25, 'Costume'),
+(26, 'Outdoors');
 
 INSERT INTO TagedItems (tag_id, item_id) VALUES
 (22, 1),
