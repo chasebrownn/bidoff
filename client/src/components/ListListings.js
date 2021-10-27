@@ -21,20 +21,42 @@ const ListListings = () => {
 
     console.log(auctions);
 
+    // return (
+    //     <Fragment>
+    //         <table className="table mt-5 text-center">
+    //             <thead>
+    //                 <tr>
+    //                     <th>User ID</th>
+    //                     <th>BUY NOW</th>
+    //                 </tr>
+    //             </thead>
+    //             <tbody>
+    //                 {auctions.map(auction => (
+    //                     <tr key={auction.auction_id}>
+    //                         <td>{auction.user_id}</td>
+    //                         <td>{auction.inst_buy_price}</td>
+    //                     </tr>
+    //                 ))}
+    //             </tbody>
+    //         </table>
+    //     </Fragment>
+    // )
     return (
         <Fragment>
             <table className="table mt-5 text-center">
                 <thead>
                     <tr>
+                        <th>IMAGE</th>
                         <th>User ID</th>
-                        <th>BUY NOW</th>
+                        <th>BUY NOW</th>    
                     </tr>
                 </thead>
                 <tbody>
                     {auctions.map(auction => (
                         <tr key={auction.auction_id}>
+                            <td><img className="card-img" src={auction.image_link} /></td>
                             <td>{auction.user_id}</td>
-                            <td>{auction.inst_buy_price}</td>
+                            <td>{auction.inst_buy_price}</td>                           
                         </tr>
                     ))}
                 </tbody>
