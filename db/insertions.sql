@@ -38,7 +38,7 @@ INSERT INTO Tags (tag_id, name) VALUES
 (18, 'Toys & Games'),
 (19, 'Hardware'),
 (20, 'Cameras & Optics'),
-(21, 'Furniture')
+(21, 'Furniture'),
 (22, 'Dog'),
 (23, 'Baseball'),
 (24, 'Food'),

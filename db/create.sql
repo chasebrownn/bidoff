@@ -34,7 +34,7 @@ CREATE TABLE Items (
 
 CREATE TABLE Tags (
     tag_id SERIAL NOT NULL,
-    name VARCHAR(20),
+    name VARCHAR(40),
     PRIMARY KEY (tag_id)
 );
 
