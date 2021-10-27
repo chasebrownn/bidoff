@@ -12,7 +12,7 @@ function App() {
       <Fragment>
         <div className="container">
           <ListListings />
-          <Cards />
+          {/* <Cards /> */}
         </div>
       </Fragment>
     </div>

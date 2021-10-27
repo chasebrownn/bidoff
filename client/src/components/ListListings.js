@@ -47,7 +47,9 @@ const ListListings = () => {
                 <thead>
                     <tr>
                         <th>IMAGE</th>
-                        <th>User ID</th>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Seller</th>
                         <th>BUY NOW</th>    
                     </tr>
                 </thead>
@@ -55,7 +57,9 @@ const ListListings = () => {
                     {auctions.map(auction => (
                         <tr key={auction.auction_id}>
                             <td><img className="card-img" src={auction.image_link} /></td>
-                            <td>{auction.user_id}</td>
+                            <td>{auction.title}</td>
+                            <td>{auction.description}</td>
+                            <td>{auction.first_name}</td>
                             <td>{auction.inst_buy_price}</td>                           
                         </tr>
                     ))}
