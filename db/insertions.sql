@@ -18,20 +18,41 @@ INSERT INTO Items (item_id, title, description, image_link) VALUES
 
 -- tags
 INSERT INTO Tags (tag_id, name) VALUES
-(1, 'Dog'), -- 1
-(2, 'Baseball'), -- 2
-(3, 'Food'), -- 3
-(4, 'Costume'), -- 4
-(5, 'Outdoors'); -- 5
+(1, 'Arts & Entertainment'),
+(2, 'Software'),
+(3, 'Vehicles & Parts'),
+(4, 'Sporting Goods'),
+(5, 'Health & Beauty'),
+(6, 'Baby & Toddler'),
+(7, 'Home & Garden'),
+(8, 'Religious & Ceremonial'),
+(9, 'Business & Industrial'),
+(10, 'Media'),
+(11, 'Mature'),
+(12, 'Food, Beverages & Tobacco'),
+(13, 'Electronics'),
+(14, 'Office Supplies'),
+(15, 'Apparel & Accessories'),
+(16, 'Luggage & Bags'),
+(17, 'Animals & Pet Supplies'),
+(18, 'Toys & Games'),
+(19, 'Hardware'),
+(20, 'Cameras & Optics'),
+(21, 'Furniture'),
+(22, 'Dog'),
+(23, 'Baseball'),
+(24, 'Food'),
+(25, 'Costume'),
+(26, 'Outdoors');
 
 INSERT INTO TagedItems (tag_id, item_id) VALUES
-(1, 1),
-(1, 5),
-(2, 2),
-(3, 3),
-(4, 1),
-(4, 5),
-(5, 4);
+(22, 1),
+(22, 5),
+(23, 2),
+(24, 3),
+(25, 1),
+(25, 5),
+(26, 4);
 
 
 -- dummy auctions, uses ids from items!
