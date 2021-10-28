@@ -1,8 +1,10 @@
 DROP SCHEMA Public CASCADE;
 CREATE SCHEMA Public;
 
+CREATE SEQUENCE user_id_seq;
+
 CREATE TABLE Users (
-    user_id SERIAL NOT NULL,
+    user_id BIGINT NOT NULL DEFAULT NEXTVAL('user_id_seq'),
     password VARCHAR(50),
 
     first_name VARCHAR(50),
@@ -21,8 +23,10 @@ CREATE TABLE Users (
     PRIMARY KEY (user_id)
 );
 
+CREATE SEQUENCE item_id_seq;
+
 CREATE TABLE Items (
-    item_id SERIAL NOT NULL,
+    item_id BIGINT NOT NULL DEFAULT NEXTVAL('item_id_seq'),
     -- info
     title VARCHAR(50),
     description VARCHAR(1000),
@@ -32,24 +36,29 @@ CREATE TABLE Items (
     PRIMARY KEY (item_id)
 );
 
+CREATE SEQUENCE tag_id_seq;
+
 CREATE TABLE Tags (
-    tag_id SERIAL NOT NULL,
+    tag_id BIGINT NOT NULL DEFAULT NEXTVAL('tag_id_seq'),
     name VARCHAR(40),
     PRIMARY KEY (tag_id)
 );
 
+
 CREATE TABLE TagedItems (
-    tag_id SERIAL,
-    item_id SERIAL,
+    tag_id BIGINT,
+    item_id BIGINT,
     FOREIGN KEY (tag_id) REFERENCES Tags(tag_id),
     FOREIGN KEY (item_id) REFERENCES Items(item_id),
     PRIMARY KEY (tag_id, item_id)
 );
 
+CREATE SEQUENCE auction_id_seq;
+
 CREATE TABLE Auctions (
-    auction_id SERIAL NOT NULL,
-    user_id SERIAL NOT NULL,
-    item_id SERIAL NOT NULL,
+    auction_id BIGINT NOT NULL DEFAULT NEXTVAL('auction_id_seq'),
+    user_id BIGINT NOT NULL,
+    item_id BIGINT NOT NULL,
     -- auction info
     end_datetime TIMESTAMP,
     min_bid FLOAT, -- float in dollars
@@ -61,9 +70,10 @@ CREATE TABLE Auctions (
     PRIMARY KEY (auction_id)
 );
 
+
 CREATE TABLE Bids (
-    bider_id SERIAL NOT NULL,
-    auction_id SERIAL NOT NULL,
+    bider_id BIGINT NOT NULL,
+    auction_id BIGINT NOT NULL,
     -- bid info
     bid_price FLOAT,
     -- key
@@ -73,8 +83,8 @@ CREATE TABLE Bids (
 );
 
 CREATE TABLE Purchases (
-    user_id INT NOT NULL,
-    item_id INT NOT NULL,
+    user_id BIGINT NOT NULL,
+    item_id BIGINT NOT NULL,
     -- auction info
     purchase_datetime TIMESTAMP,
     purchase_price FLOAT, -- float in dollars

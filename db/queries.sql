@@ -90,6 +90,9 @@ set end_datetime = end_datetime + interval '1 week'
 where auction_id = 1;
 
 
-
+-- insert a new item
+INSERT INTO Items (title, description, image_link) VALUES
+('my title', 'a really cool itme', 'image')
+RETURNING item_id;
 
 
