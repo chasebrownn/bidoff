@@ -14,8 +14,11 @@ INSERT INTO Items (item_id, title, description, image_link) VALUES
 (2, 'Trading Card', 'I love this card, but it is really valuable!', 'https://static01.nyt.com/images/2021/02/16/sports/00sports-cards3/merlin_158400765_12549293-2c4f-4205-b4f2-40937bd2a0fa-articleLarge.jpg'), -- 2
 (3, 'Cookies', 'Yummy!!!!', 'https://i.redd.it/glh2y8nqfb401.jpg'), -- 3
 (4, 'Canada Goose Jacket!', 'Really warm!', 'https://external-preview.redd.it/QcJXry_1sWiEt11IzQS6pFQ0I1ndv3JbCFPjQNIgOJ4.jpg?auto=webp&s=6a551411681e8132554a87caebb1808a5e1af6c0'), -- 4
-(5, 'Pitbull Hoddie', 'A hoodie for your pitbull!!', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvD0MZMsD2hX8cul4zAsGoxqF93ldNNmxIoehux8fcXZX7AZgeEIP7dTPrR3EgAuMdnrg&usqp=CAU'); -- 5
+(5, 'Pitbull Hoddie', 'A hoodie for your pitbull!!', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvD0MZMsD2hX8cul4zAsGoxqF93ldNNmxIoehux8fcXZX7AZgeEIP7dTPrR3EgAuMdnrg&usqp=CAU');-- 5
 
+-- more dummy items
+INSERT INTO Items (item_id, title, description, image_link) VALUES
+(6, 'Poodle Jacket', 'A poodlejacke', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvD0MZMsD2hX8cul4zAsGoxqF93ldNNmxIoehux8fcXZX7AZgeEIP7dTPrR3EgAuMdnrg&usqp=CAU'); -- 6
 -- tags
 INSERT INTO Tags (tag_id, name) VALUES
 (1, 'Arts & Entertainment'),
@@ -54,12 +57,20 @@ INSERT INTO TagedItems (tag_id, item_id) VALUES
 (25, 5),
 (26, 4);
 
+-- more Tags
+INSERT INTO tageditems (tag_id, item_id) VALUES
+(22, 6);
+
 
 -- dummy auctions, uses ids from items!
 INSERT INTO Auctions (auction_id, user_id, item_id, end_datetime, min_bid, inst_buy_enabled, inst_buy_price) VALUES 
 (1, 3, 1, '2021-11-26 17:54:0.0', 10.00, TRUE, 44.99), -- 1
 (2, 1, 2, '2021-12-5 5:04:0.0', 1000.00, TRUE, 1500.00), -- 2
 (3, 6, 3, '2022-1-1 00:00:0.0', 10.00, FALSE, 0.0); -- 3
+
+-- more dummy auctions
+INSERT INTO Auctions(auction_id, user_id, item_id, end_datetime, min_bid, inst_buy_enabled, inst_buy_price) VALUES
+(4, 5, 6, '2021-12-25 17:40:0.0', 20, FALSE, 0);
 
 -- dummy bids, auction #2 intentionally has no bids
 INSERT INTO Bids (bider_id, auction_id , bid_price) VALUES
@@ -75,4 +86,7 @@ INSERT INTO Bids (bider_id, auction_id , bid_price) VALUES
 INSERT INTO Purchases (user_id, item_id, purchase_datetime, purchase_price) VALUES
 (1, 4, '2018-4-19 10:35:0.0', 550.00),
 (6, 5, '2022-5-28 20:13:0.0', 35.00);
+
+
+
 
