@@ -29,6 +29,22 @@ app.get("/auctions", async (req, res) => {
 
 })
 
+//create an auction -- needs work
+app.post("/auctions", async (req, res) => {
+    try {
+        const { description } = req.body;
+        //adds to database
+        const new_auction = await pool.query(
+            "INSERT INTO todo (description) VALUES($1) RETURNING *",
+            [description]
+        );
+        res.json(new_auction.rows[0]);
+    }
+    catch (err) {
+        console.error(err.message);
+    }
+});
+
 app.listen(5000, () => {
     console.log("Server started on port 5000");
 })
