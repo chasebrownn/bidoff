@@ -30,15 +30,20 @@ app.get("/auctions", async (req, res) => {
 })
 
 //create an auction -- needs work
-app.post("/auctions", async (req, res) => {
+app.post("/auction", async (req, res) => {
     try {
-        const { description } = req.body;
+        const { title, description, image_link,  user_id, end_datetime, min_bid, inst_buy_enabled, inst_buy_price } = req.body;
+        console.log(title, description, image_link,  user_id, end_datetime, min_bid, inst_buy_enabled, inst_buy_price);
         //adds to database
-        const new_auction = await pool.query(
-            "INSERT INTO todo (description) VALUES($1) RETURNING *",
-            [description]
+        const new_item = await pool.query("INSERT INTO Items (title, description, image_link) VALUES ($1, $2, $3) RETURNING item_id", [title, description, image_link]
         );
-        res.json(new_auction.rows[0]);
+        const new_item_id = new_item.rows[0].item_id
+        console.log(user_id, new_item_id, end_datetime, min_bid, inst_buy_enabled, inst_buy_price)
+        const new_auction = await pool.query("INSERT INTO Auctions (user_id, item_id, end_datetime, min_bid, inst_buy_enabled, inst_buy_price) VALUES ($1, $2, $3, $4, $5, $6) RETURNING item_id", 
+        [user_id, new_item_id, end_datetime, min_bid, inst_buy_enabled, inst_buy_price]
+        );
+        res.send("Success")
+        
     }
     catch (err) {
         console.error(err.message);
