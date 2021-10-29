@@ -11,6 +11,7 @@ function App() {
     <div className="App">
       <Fragment>
         <div className="container">
+          <InputListing />
           <ListListings />
           {/* <Cards /> */}
         </div>
