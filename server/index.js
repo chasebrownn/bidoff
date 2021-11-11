@@ -49,6 +49,32 @@ app.post("/auction", async (req, res) => {
         console.error(err.message);
     }
 });
+// User Endpoints:
+app.get("/users", async (req, res) => {
+    try {
+        const allUsers = await pool.query("SELECT * FROM Users")
+        res.json(allUsers.rows)
+    } catch (err) {
+        res.send("error")
+        console.error(err.message)
+    }
+
+})
+
+// add a new user.  For now, passwords are not hashed
+app.post("/user", async (req, res) => {
+    try {
+        const {password, first_name, last_name, email, email_verified, phone_number, phone_number_verified, address} = req.body;
+        // add validation
+        console.log(password, first_name, last_name, email, email_verified, phone_number, phone_number_verified, address);
+        pool.query("INSERT INTO Users (password, first_name, last_name, email, email_verified, phone_number, phone_number_verified, address) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)", [password, first_name, last_name, email, email_verified, phone_number, phone_number_verified, address]);
+        res.send("Success")
+    } catch (err) {
+        console.error(err.message)
+    }
+})
+
+
 
 app.listen(5000, () => {
     console.log("Server started on port 5000");
