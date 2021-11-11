@@ -16,6 +16,7 @@ const client = require('twilio')(accountSid, authToken);
 
 function sendVerifyText(phone_number){
     // for local development where twilio isn't set up
+    
     if (!twilioEnabled){
         console.log("twilio not enabled")
         return
