@@ -61,14 +61,19 @@ app.get("/users", async (req, res) => {
 
 })
 
+// require either phone number or email
+// reject if either already in db
+
 // add a new user.  For now, passwords are not hashed
 app.post("/user", async (req, res) => {
     try {
-        const {password, first_name, last_name, email, email_verified, phone_number, phone_number_verified, address} = req.body;
+        const {password, first_name, last_name, email, phone_number, address} = req.body;
         // add validation
-        console.log(password, first_name, last_name, email, email_verified, phone_number, phone_number_verified, address);
-        pool.query("INSERT INTO Users (password, first_name, last_name, email, email_verified, phone_number, phone_number_verified, address) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)", [password, first_name, last_name, email, email_verified, phone_number, phone_number_verified, address]);
+        console.log(req.body)
+        console.log(password, first_name, last_name, email, phone_number, address);
+        pool.query("INSERT INTO Users (password, first_name, last_name, email, email_verified, phone_number, phone_number_verified, address) VALUES ($1, $2, $3, $4, 'False', $5, 'False', $6)", [password, first_name, last_name, email, phone_number, address]);
         res.send("Success")
+        console.log("Success")
     } catch (err) {
         console.error(err.message)
     }
