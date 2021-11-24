@@ -1,0 +1,45 @@
+.contact-section{
+    padding: 2rem;
+}
+
+.ContactForm-blue-background{
+    background-color: #F5F7FF;
+    padding: 3rem 5rem 5rem 5rem;
+}
+
+.ContactForm-blue-text{
+    color: #3C5AE7;
+    font-family: poppins;
+    font-weight: 400;
+    font-size: 1.5em;
+}
+
+.ContactForm-black-text{
+    color: #0F101D;
+    font-family: poppins;
+    font-weight: 700;
+    font-size: 1.5em;
+}
+
+.contact-title {
+    margin-bottom: 2rem;
+}
+
+.ContactForm-image{
+    width: 70rem;
+}
+
+.contact-form-input{
+    margin: 2rem;
+}
+
+.ContactForm .form-control{
+    margin-bottom: 1.5rem;
+}
+
+.contact-btn{
+    float: right;
+    font-weight: 600;
+    font-size: 16px;
+    padding: .5em 2em .5em 2em !important;
+}
