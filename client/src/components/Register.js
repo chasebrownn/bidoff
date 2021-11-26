@@ -1,4 +1,5 @@
 import React, {Fragment, useState} from "react";
+import { Outlet, Link } from "react-router-dom";
 
 const Register = () => {
     const [user, setUser] = useState({
@@ -91,8 +92,11 @@ const Register = () => {
                     placeholder="Address"
                     onChange={handleValueChange}
                 />
-                <button className="btn btn-success">Register</button>
+                <Link to="/dashboard" >
+                    <button className="btn btn-success">Register</button>
+                </Link>              
             </form>
+            
         </Fragment>
     )
 }

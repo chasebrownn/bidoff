@@ -8,21 +8,19 @@ import ListListings from "./components/ListListings";
 import Cards from "./components/Cards";
 import Register from "./components/Register";
 
-function App() {
+function Dashboard() {
   return (
     <div className="App">
       <Fragment>
         <div className="container">
-          {/* <InputListing />
-          <ListListings /> */}
-          <Register />
+          <InputListing />
+          <ListListings />
           {/* <Cards /> */}
-          
         </div>
       </Fragment>
-      <Outlet />
+      <Outlet/>
     </div>
   );
 }
 
-export default App;
+export default Dashboard;
