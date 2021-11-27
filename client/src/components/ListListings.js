@@ -8,21 +8,23 @@ class ListListings extends React.Component {
         this.state = {
             auctions: [],
             tag_filter: 0,
+            date_filter: 0,
         }
 
     }
 
     getAuctions = async () => {
         try {
-            const query = 'auctions/' + this.state.tag_filter;
-            console.log(query);
-            const response = await fetch("http://localhost:5000/auctions/");
+            const queryParams = {tag: this.state.tag_filter, date: this.state.date_filter};
+            const queryString = Object.keys(queryParams)
+                .map(key => key + '=' + queryParams[key])
+                .join('&');
+            const response = await fetch("http://localhost:5000/auctions?" + queryString);
             const jsonData = await response.json();
             let auctions = [];
             jsonData.forEach(auction => {
                 auctions.push(auction);
             });
-
             this.setState({auctions: auctions});
         }
          catch (err) {
@@ -31,8 +33,7 @@ class ListListings extends React.Component {
     }
 
     handleSelect = (newTag) => {
-        this.setState({tag_filter: newTag.value});
-        console.log(newTag);
+        this.setState({tag_filter: newTag.value}, this.getAuctions);
     }
     componentDidMount() {
         this.getAuctions();

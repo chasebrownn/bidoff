@@ -21,14 +21,23 @@ app.use(express.json())
 // get all auctions
 app.get("/auctions", async (req, res) => {
     try {
-        //const allTodos = await pool.query("SELECT * FROM Auctions")
-        const allTodos = await pool.query("select * FROM auctions, items, users where auctions.item_id = items.item_id AND auctions.user_id = users.user_id")
-        res.json(allTodos.rows)
+        const { tag, date } = req.query
+        console.log(tag, date);
+        if ( tag === '0' && date === '0'){
+            const data = await pool.query("select * FROM auctions, items, users where auctions.item_id = items.item_id AND auctions.user_id = users.user_id")
+            return res.json(data.rows)
+        }else if (tag !== '0' && date === '0') {
+            const data = await pool.query("select * FROM auctions, items, users, tageditems where auctions.item_id = items.item_id AND auctions.user_id = users.user_id AND \
+                items.item_id = tageditems.item_id and tageditems.tag_id = $1", [parseInt(tag)])
+            return res.json(data.rows)
+        }
+
     } catch (err) {
         res.send("error")
         console.error(err.message)
     }
-
+    res.send("error")
+    console.error(err.message)
 })
 
 //create an auction -- needs work
