@@ -1,12 +1,11 @@
 import React, { Fragment } from "react";
 import { Outlet, Link } from "react-router-dom";
-import './App.css';
 
 //components
-import InputListing from "./components/InputListing";
-import ListListings from "./components/ListListings";
-import Cards from "./components/Cards";
-import Register from "./components/Register";
+import InputListing from "../components/InputListing";
+import ListListings from "../components/ListListings";
+import Cards from "../components/Cards";
+import Register from "../components/Register";
 
 function Dashboard() {
   return (

@@ -17,15 +17,17 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { render } from "react-dom";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import Dashboard from "./dashboard";
+import Dashboard from "./routes/dashboard";
+import Login from "./components/Login";
 
 const rootElement = document.getElementById("root");
 
 render(
     <BrowserRouter>
         <Routes>
-            <Route path="" element={<App />} />
+            <Route path="" element={<Login />} />
             <Route path="dashboard" element={<Dashboard />} />
+            <Route path="register" element={<App />} />
         </Routes>
     </BrowserRouter>,
   rootElement
