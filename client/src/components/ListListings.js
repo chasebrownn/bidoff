@@ -53,6 +53,10 @@ class ListListings extends React.Component {
     }
 
     handleDateRange = (event) => {
+        if (event[1] < new Date()){
+            event[1] = new Date();
+        }
+
         this.setState({dateValue: event}, this.getAuctions);
     }
     options = [
