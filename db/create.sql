@@ -38,6 +38,7 @@ CREATE TABLE Items (
 
 CREATE SEQUENCE tag_id_seq;
 
+
 CREATE TABLE Tags (
     tag_id BIGINT NOT NULL DEFAULT NEXTVAL('tag_id_seq'),
     name VARCHAR(40),
@@ -65,8 +66,8 @@ CREATE TABLE Auctions (
     inst_buy_enabled BOOLEAN,
     inst_buy_price FLOAT,
     -- key
-    FOREIGN KEY (user_id) REFERENCES Users(user_id),
-    FOREIGN KEY (item_id) REFERENCES Items(item_id),
+    FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (item_id) REFERENCES Items(item_id) ON DELETE CASCADE ,
     PRIMARY KEY (auction_id)
 );
 
@@ -77,8 +78,8 @@ CREATE TABLE Bids (
     -- bid info
     bid_price FLOAT,
     -- key
-    FOREIGN KEY (bider_id) REFERENCES Users(user_id),
-    FOREIGN KEY (auction_id) REFERENCES Auctions(auction_id),
+    FOREIGN KEY (bider_id) REFERENCES Users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (auction_id) REFERENCES Auctions(auction_id) ON DELETE CASCADE,
     PRIMARY KEY (bider_id, auction_id)
 );
 
@@ -89,8 +90,8 @@ CREATE TABLE Purchases (
     purchase_datetime TIMESTAMP,
     purchase_price FLOAT, -- float in dollars
     -- key
-    FOREIGN KEY (user_id) REFERENCES Users(user_id),
-    FOREIGN KEY (item_id) REFERENCES Items(item_id),
+    FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (item_id) REFERENCES Items(item_id) ON DELETE CASCADE ,
     PRIMARY KEY (user_id, item_id)
 );
 

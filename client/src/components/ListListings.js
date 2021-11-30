@@ -44,6 +44,26 @@ class ListListings extends React.Component {
         }
     }
 
+    buyAuctions = async (auction_id, price) => {
+        try {
+            const response = await fetch("http://localhost:5000/buy/",
+                {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    user_id: 1,
+                    auction_id: auction_id,
+                    purchase_price: price
+                })
+            });
+            await this.getAuctions();
+
+        } catch (err) {
+            console.error(err.message);
+        }
+    }
     handleSelect = (newTag) => {
         this.setState({tag_filter: newTag.value}, this.getAuctions);
     }
@@ -60,10 +80,10 @@ class ListListings extends React.Component {
         this.setState({dateValue: event}, this.getAuctions);
     }
 
-    handleBuyNow (id) {
+    handleBuyNow (id, price) {
         return event => {
             event.preventDefault();
-            console.log(id);
+            this.buyAuctions(id, price)
         }
     }
 
@@ -118,7 +138,7 @@ class ListListings extends React.Component {
                     <td>{auction.title}</td>
                     <td>{auction.description}</td>
                     <td>{auction.first_name}</td>
-                    <td><button className='submit-btn btn btn-primary contact-btn' onClick={this.handleBuyNow(auction.auction_id)} type='submit'>${auction.inst_buy_price}</button></td>
+                    <td><button className='submit-btn btn btn-primary contact-btn' onClick={this.handleBuyNow(auction.auction_id, auction.inst_buy_price)} type='submit'>${auction.inst_buy_price}</button></td>
                     <td><button className='submit-btn btn btn-primary contact-btn' onClick={this.handleBid(auction.auction_id)} type='submit'>Bid</button></td>
                 </tr>
             )))
