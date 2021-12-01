@@ -20,7 +20,7 @@ app.use(express.json())
 // ROUTES
 // get all auctions
 app.get("/auctions", async (req, res) => {
-    console.log("Recieving Request")
+    console.log("Receiving Request")
     try {
         const { tag, start_date, end_date } = req.query
         console.log(tag, start_date, end_date)
@@ -75,6 +75,7 @@ app.get("/users", async (req, res) => {
 // send confirmation email or phone number or both
 // reject if either already in db
 app.post("/user", async (req, res) => {
+    console.log("POST USER");
     try {
         const {password, first_name, last_name, email, phone_number, address} = req.body;
         
@@ -83,6 +84,8 @@ app.post("/user", async (req, res) => {
             // this is a email regex I grabbed from stack overflow
             // just because an email fits it, doesn't mean it is valid
             if (/(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/.test(email) == false){
+                res.status(400)
+                console.log("invalid email");
                 res.send("Invalid Email")
                 return
             }
@@ -90,6 +93,8 @@ app.post("/user", async (req, res) => {
             const emailInDB = await pool.query("SELECT * FROM Users WHERE email = $1", [email])
 
             if (emailInDB.rows.length > 0) {
+                res.status(400)
+                console.log("eamil already in use");
                 res.send("Email already in use")
                 return
             }
@@ -101,35 +106,42 @@ app.post("/user", async (req, res) => {
             // +15033359873
             // just because a phone number fits the regex, doesn't mean it is valid
             // in future, can use twilio lookup api to verify number is real
-            if (/^\+[1-9]\d{1,14}$/.test(phone_number) == false){
-                res.send("Invalid Phone Number")
-                return
-            }
+            // if (/^\+[1-9]\d{1,14}$/.test(phone_number) == false){
+            //     console.log("Invalid Phone Number")
+            //     res.send("Invalid Phone Number")
+            //     return
+            // }
     
             const phoneNumberInDB = await pool.query("SELECT * FROM Users WHERE phone_number = $1", [phone_number])
 
             if (phoneNumberInDB.rows.length > 0) {
+                res.status(400)
+                console.log("Phone number already in use")
                 res.send("Phone number already in use")
                 return
             }
         }
 
         if (first_name.length == 0){
+            res.status(400)
             res.send("First name must be at least 1 character")
             return
         }
 
         if (last_name.length == 0){
+            res.status(400)
             res.send("Last name must be at least 1 character")
             return
         }
 
         if (address.length == 0){
+            res.status(400)
             res.send("Address must be at least 1 character")
             return
         }
 
         if (password.length < 6){
+            res.status(400)
             res.send("Password must be at least 6 characters")
             return
         }
@@ -138,12 +150,14 @@ app.post("/user", async (req, res) => {
         if (phone_number.length > 0 || email.length > 0){
             pool.query("INSERT INTO Users (password, first_name, last_name, email, email_verified, phone_number, phone_number_verified, address) VALUES ($1, $2, $3, $4, 'False', $5, 'False', $6)", [password, first_name, last_name, email, phone_number, address]);
             verify.sendVerifyText(phone_number)
+            res.status(200)
             res.send("Success")
             return
         }
         
     } catch (err) {
         res.send("Internal Error")
+        res.status(500)
         console.error(err.message)
         
     }

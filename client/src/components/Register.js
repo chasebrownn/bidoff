@@ -27,6 +27,7 @@ const Register = () => {
 
             // console.log("BODY:")
             // console.log(body)
+            console.log("SUBMIT REGISTER")
 
             const response = await fetch ("http://localhost:5000/user", {
                 method: "POST",
@@ -34,8 +35,15 @@ const Register = () => {
                 body: JSON.stringify(user)
             });
             
-            console.log(response);
-            window.location = "/"; //once a response has been sent, it refreshes
+            if (response.status != 200) {
+                // failed to register, inform user
+                alert(await response.text());
+                
+                
+                // alert(response.json())
+            } else {
+                window.location = "/"; //successful register, return to login page
+            }
         } catch (err) {
             console.error(err.message);
         }
@@ -118,9 +126,9 @@ const Register = () => {
                                     />
                                 </div>
 
-                                <Link to="/dashboard" >
+                                {/* <Link to="/dashboard" > */}
                                     <button type="submit" className="btn btn-primary btn-block submit-button">Submit</button>
-                                </Link>
+                                {/* </Link> */}
                             </form>
                         </div>
                     </div>
