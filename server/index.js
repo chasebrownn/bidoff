@@ -11,6 +11,25 @@ const cors = require("cors")
 const pool = require("./db")
 
 const verify = require("./verify")
+const jwt = require('jsonwebtoken')
+
+// this function can be used as middleware for requests that require authentication
+function authenticateToken(req, res, next) {
+    // console.log(req)
+    const token = req.headers['authorization']
+    // console.log(authHeader)
+    // const token = authHeader && authHeader.split(' ')[1]
+    // console.log(token)
+  
+    if (token == null) return res.sendStatus(401)
+  
+    jwt.verify(token, process.env.TOKEN_SECRET, (err, user_id) => {
+    //   console.log(err)
+      if (err) return res.sendStatus(403)
+      req.user_id = user_id
+      next()
+    })
+}
 
 
 // middleware
@@ -38,9 +57,12 @@ app.get("/auctions", async (req, res) => {
 })
 
 //create an auction -- needs work
-app.post("/auction", async (req, res) => {
+app.post("/auction", authenticateToken, async (req, res) => {
+    // This is an example of how to use authenticateToken as middleware and then get a user_id from it
+    console.log(req.user_id)
     try {
-        const { title, description, image_link,  user_id, end_datetime, min_bid, inst_buy_enabled, inst_buy_price } = req.body;
+        const { title, description, image_link,  bad_user_id, end_datetime, min_bid, inst_buy_enabled, inst_buy_price } = req.body;
+        const user_id = req.user_id
         console.log(title, description, image_link,  user_id, end_datetime, min_bid, inst_buy_enabled, inst_buy_price);
         //adds to database
         const new_item = await pool.query("INSERT INTO Items (title, description, image_link) VALUES ($1, $2, $3) RETURNING item_id", [title, description, image_link]
@@ -174,6 +196,36 @@ app.post("/user", async (req, res) => {
         res.status(500)
         console.error(err.message)
         
+    }
+})
+
+// authenticate user, return valid token if password is valid
+app.get("/user", async (req, res) => {
+    console.log("GET USER");
+    try {
+        const {email, password} = req.body;
+
+        // NOTE: for now, user passwords are NOT hashed!
+        const valid_users = await pool.query("SELECT * FROM Users WHERE email = $1 AND password = $2", [email, password])
+        if (valid_users.rows.length > 0) {
+            // authenticate user
+            const user_id = valid_users.rows[0].user_id
+            console.log("Auhenticating user with used_id: " + user_id)
+            const token = jwt.sign(user_id, process.env.TOKEN_SECRET)
+            res.status(200)
+            // console.log("authenticating user");
+            res.json(token)
+            return
+        } else {
+            console.log("Invalid login attempt")
+            res.status(400)
+            res.send("Invalid Email and/or Password!")
+            return
+        }
+    } catch (err) {
+        res.send("Internal Error")
+        res.status(500)
+        console.error(err.message)
     }
 })
 
