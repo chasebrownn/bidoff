@@ -20,10 +20,8 @@ app.use(express.json())
 // ROUTES
 // get all auctions
 app.get("/auctions", async (req, res) => {
-    console.log("Receiving Request")
     try {
         const { tag, start_date, end_date } = req.query
-        console.log(tag, start_date, end_date)
         if ( tag === '0'){
             const data = await pool.query("select * FROM auctions, items, users where auctions.item_id = items.item_id AND auctions.user_id = users.user_id AND auctions.end_datetime <= $1", [end_date])
             return res.json(data.rows)
@@ -54,6 +52,22 @@ app.post("/auction", async (req, res) => {
         );
         res.send("Success")
         
+    }
+    catch (err) {
+        console.error(err.message);
+    }
+});
+
+app.put("/buy", async (req, res) => {
+    try {
+        const { user_id, auction_id, purchase_price } = req.body;
+        console.log(user_id, auction_id, purchase_price);
+        const date = Date.now()
+        // remove the auction from the auction table
+        const item_id = await pool.query("DELETE FROM Auctions WHERE auction_id = $1 RETURNING item_id", [auction_id]);
+        // add item to purchased table
+        const new_purchase = await pool.query("INSERT INTO purchases (user_id, item_id, purchase_datetime, purchase_price) VALUES ($1, $2, now(), $3) RETURNING item_id", [parseInt(user_id), parseInt(item_id.rows[0].item_id), parseFloat(purchase_price)]);
+        res.send("Success")
     }
     catch (err) {
         console.error(err.message);

@@ -44,6 +44,26 @@ class ListListings extends React.Component {
         }
     }
 
+    buyAuctions = async (auction_id, price) => {
+        try {
+            const response = await fetch("http://localhost:5000/buy/",
+                {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    user_id: 1,
+                    auction_id: auction_id,
+                    purchase_price: price
+                })
+            });
+            await this.getAuctions();
+
+        } catch (err) {
+            console.error(err.message);
+        }
+    }
     handleSelect = (newTag) => {
         this.setState({tag_filter: newTag.value}, this.getAuctions);
     }
@@ -58,6 +78,20 @@ class ListListings extends React.Component {
         }
 
         this.setState({dateValue: event}, this.getAuctions);
+    }
+
+    handleBuyNow (id, price) {
+        return event => {
+            event.preventDefault();
+            this.buyAuctions(id, price)
+        }
+    }
+
+    handleBid(id) {
+        return event => {
+            event.preventDefault();
+            console.log(id);
+        }
     }
     options = [
         {value: 0, label: 'Every Tag'},
@@ -88,6 +122,28 @@ class ListListings extends React.Component {
         {value: 25, label: 'Costume'},
         {value: 26, label: 'Outdoors'}
     ]
+
+    auctionRendering() {
+        if (this.state.auctions .length === 0) {
+            return (
+                <div>
+                    <h1>No auctions found</h1>
+                </div>
+            )
+        }else{
+            return (
+            this.state.auctions.map(auction => (
+                <tr key={auction.auction_id}>
+                    <td><img className="card-img" src={auction.image_link}/></td>
+                    <td>{auction.title}</td>
+                    <td>{auction.description}</td>
+                    <td>{auction.first_name}</td>
+                    <td><button className='submit-btn btn btn-primary contact-btn' onClick={this.handleBuyNow(auction.auction_id, auction.inst_buy_price)} type='submit'>${auction.inst_buy_price}</button></td>
+                    <td><button className='submit-btn btn btn-primary contact-btn' onClick={this.handleBid(auction.auction_id)} type='submit'>Bid</button></td>
+                </tr>
+            )))
+        }
+    }
 
     render() {
 
@@ -136,19 +192,12 @@ class ListListings extends React.Component {
                         <th>Title</th>
                         <th>Description</th>
                         <th>Seller</th>
-                        <th>BUY NOW</th>
+                        <th>Buy Now</th>
+                        <th>Bid</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {this.state.auctions.map(auction => (
-                        <tr key={auction.auction_id}>
-                            <td><img className="card-img" src={auction.image_link}/></td>
-                            <td>{auction.title}</td>
-                            <td>{auction.description}</td>
-                            <td>{auction.first_name}</td>
-                            <td>{auction.inst_buy_price}</td>
-                        </tr>
-                    ))}
+                    {this.auctionRendering()}
                     </tbody>
                 </table>
             </Fragment>
