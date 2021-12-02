@@ -230,6 +230,26 @@ app.post("/user_auth", async (req, res) => {
     }
 })
 
+app.get("/end_day", async (req, res) => {
+    try {
+        const highest_bid = await pool.query("SELECT bider_id as buyer_id, auctions.item_id as item_id, auctions.auction_id as auction_id, bids.bid_price as bid_price FROM auctions, items, users, bids WHERE auctions.item_id = items.item_id AND auctions.user_id = users.user_id AND auctions.auction_id = bids.auction_id AND end_datetime < CURRENT_TIMESTAMP ORDER BY bid_price DESC LIMIT 1;")
+        if (highest_bid.rowCount == 0){
+            console.log("No auctions ended today")
+            res.send("No auctions ended today")
+        } else {
+            const {buyer_id, item_id, auction_id, bid_price} = highest_bid.rows[0]
+            console.log("ENDING BID: ", buyer_id, item_id, auction_id, bid_price)
+            const purchase = await pool.query("INSERT INTO Purchases VALUES ($1, $2, CURRENT_TIMESTAMP, $3)", [buyer_id, item_id, bid_price])
+            const remove_auction = await pool.query("DELETE FROM Auctions WHERE auction_id = $1", [auction_id])
+            res.json(highest_bid.rows)
+        }
+        
+    } catch (error) {
+        console.log(error)
+    }
+
+})
+
 
 
 app.listen(5000, () => {
