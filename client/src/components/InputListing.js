@@ -17,7 +17,7 @@ const InputListing = () => {
         user_id: '1',
         end_datetime: new Date(nextMonth).toISOString().slice(0, 10),
         min_bid: '',
-        inst_buy_enabled: true,
+        inst_buy_enabled: false,
         inst_buy_price: ''
     });
 
@@ -29,6 +29,12 @@ const InputListing = () => {
         })
     }
 
+    function handleInstBuyChange(){
+        setAuction({
+            ...auction,
+            inst_buy_enabled: !auction.inst_buy_enabled
+        })
+    }
     const onSubmitForm = async (e) => {
         console.log(auction);
         e.preventDefault();
@@ -127,7 +133,7 @@ const InputListing = () => {
                                             name='inst_buy_enabled'
                                             value={auction.inst_buy_enabled}
                                             placeholder='Enable Instant Buy'
-                                            onChange={handleValueChange}
+                                            onChange={handleInstBuyChange}
                                         />
                                     </div>
                                     <div className='col-4'>
