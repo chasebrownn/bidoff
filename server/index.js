@@ -19,14 +19,15 @@ function authenticateToken(req, res, next) {
     const token = req.headers['authorization']
     // console.log(authHeader)
     // const token = authHeader && authHeader.split(' ')[1]
-    // console.log(token)
+    console.log("Middleware recieved token: " + token)
   
     if (token == null) return res.sendStatus(401)
-  
+    // MUST HAVE A TOKEN_SECRET!!!
     jwt.verify(token, process.env.TOKEN_SECRET, (err, user_id) => {
     //   console.log(err)
       if (err) return res.sendStatus(403)
       req.user_id = user_id
+      console.log("Middleware passed user: " + user_id)
       next()
     })
 }
@@ -200,8 +201,8 @@ app.post("/user", async (req, res) => {
 })
 
 // authenticate user, return valid token if password is valid
-app.get("/user", async (req, res) => {
-    console.log("GET USER");
+app.post("/user_auth", async (req, res) => {
+    console.log("POST user_auth");
     try {
         const {email, password} = req.body;
 

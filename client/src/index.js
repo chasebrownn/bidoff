@@ -22,10 +22,15 @@ import Login from "./components/Login";
 
 const rootElement = document.getElementById("root");
 
+function setToken(token){
+    console.log("got token in index: " + token)
+    localStorage.setItem('auth_token',token)
+}
+
 render(
     <BrowserRouter>
         <Routes>
-            <Route path="" element={<Login />} />
+            <Route path="" element={<Login setToken={setToken} />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="register" element={<App />} />
         </Routes>

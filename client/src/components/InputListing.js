@@ -28,13 +28,15 @@ const InputListing = () => {
         e.preventDefault();
         try {
             // const body = { auction };
+            const token = JSON.parse(localStorage.getItem('auth_token'))
+            console.log("READ TOKEN: " + token)
             const response = await fetch("http://localhost:5000/auction", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: { "Content-Type": "application/json", "authorization":token},
                 body: JSON.stringify(auction)
             });
             console.log(response);
-            window.location = "/"; //once a response has been sent, it refreshes
+            window.location = "/dashboard"; //once a response has been sent, it refreshes
         } catch (err) {
             console.error(err.message);
         }
