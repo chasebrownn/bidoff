@@ -138,8 +138,18 @@ class ListListings extends React.Component {
                     <td>{auction.title}</td>
                     <td>{auction.description}</td>
                     <td>{auction.first_name}</td>
-                    <td><button className='submit-btn btn btn-primary contact-btn' onClick={this.handleBuyNow(auction.auction_id, auction.inst_buy_price)} type='submit'>${auction.inst_buy_price}</button></td>
-                    <td><button className='submit-btn btn btn-primary contact-btn' onClick={this.handleBid(auction.auction_id)} type='submit'>Bid</button></td>
+                    { auction.inst_buy_enabled ?
+                        <td>
+                            <button className="btn btn-primary" onClick={this.handleBuyNow(auction.auction_id, auction.inst_buy_price)}>Buy Now</button>
+                        </td>
+                        :
+                        <td>
+
+                        </td>
+                    }
+                    <td>
+                        <button className='submit-btn btn btn-primary contact-btn' onClick={this.handleBid(auction.auction_id)} type='submit'>Bid</button>
+                    </td>
                 </tr>
             )))
         }
