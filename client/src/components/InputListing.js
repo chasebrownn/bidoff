@@ -1,22 +1,26 @@
-import React, { Fragment, useState, useRef } from "react";
+import React, {Fragment, useState, useRef} from "react";
 import '../App.css';
 //import { Button } from './Button';
 import './InputListing.css';
-import { useForm } from 'react-hook-form';
-import { ToastContainer, toast } from 'react-toastify';
+import {useForm} from 'react-hook-form';
+import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
-
+// import {DatePicker, LocalizationProvider} from "@mui/lab";
+// import AdapterDateFns from "@mui/lab/AdapterDateFns";
+// import {TextField} from "@mui/material";
 const InputListing = () => {
+    const nextMonth = new Date().setMonth(new Date().getMonth() + 1)
     const [auction, setAuction] = useState({
         title: '',
         description: '',
         image_link: '',
         user_id: '1',
-        end_datetime: '',
+        end_datetime: new Date(nextMonth).toISOString().slice(0, 10),
         min_bid: '',
-        inst_buy_enabled: '',
+        inst_buy_enabled: true,
         inst_buy_price: ''
     });
+
     function handleValueChange(evt) {
         const value = evt.target.value
         setAuction({
@@ -24,7 +28,9 @@ const InputListing = () => {
             [evt.target.name]: value
         })
     }
+
     const onSubmitForm = async (e) => {
+        console.log(auction);
         e.preventDefault();
         try {
             // const body = { auction };
@@ -32,12 +38,13 @@ const InputListing = () => {
             console.log("READ TOKEN: " + token)
             const response = await fetch("http://localhost:5000/auction", {
                 method: "POST",
-                headers: { "Content-Type": "application/json", "authorization":token},
+                headers: {"Content-Type": "application/json", "authorization": token},
                 body: JSON.stringify(auction)
             });
             console.log(response);
             window.location = "/dashboard"; //once a response has been sent, it refreshes
         } catch (err) {
+            console.log("Errored out, in onSubmitForm, with error:")
             console.error(err.message);
         }
     }
@@ -53,83 +60,90 @@ const InputListing = () => {
                             </div>
                             <form id='contact-form' onSubmit={onSubmitForm}>
                                 {/* Row 1 of form */}
-                                <div className='row formRow'>
-                                    <div className='col-4'>
+                                <div className='row formRow'
+                                style={{
+                                    justifyContent: 'space-around',
+                                }}>
+                                    <div className='col-4'
+                                         style={{width: '48%'}}>
                                         <input
                                             type='text'
                                             className='form-control formInput'
                                             name='title'
-                                            value ={auction.title}                                           
+                                            value={auction.title}
                                             placeholder='Title'
                                             onChange={handleValueChange}
-                                        ></input>
+                                        />
                                         {/* {errors.name && <span className='errorMessage'>{errors.name.message}</span>} */}
                                     </div>
-                                    <div className='col-4'>
+                                    {/*<div className='col-4'>*/}
+                                    {/*    <LocalizationProvider dateAdapter={AdapterDateFns}>*/}
+                                    {/*        <DatePicker*/}
+                                    {/*            className='form-control formInput'*/}
+                                    {/*            name='end_datetime'*/}
+                                    {/*            value={auction.end_datetime}*/}
+                                    {/*            onChange={handleDateChange}*/}
+                                    {/*            renderInput={(params) => <TextField {...params} label="End Date" />}*/}
+                                    {/*            label="End Date"*/}
+                                    {/*            format="MM/dd/yyyy"*/}
+                                    {/*            disablePast*/}
+                                    {/*            disableToolbar*/}
+                                    {/*            autoOk*/}
+                                    {/*            variant="inline"*/}
+                                    {/*            inputVariant="outlined"*/}
+                                    {/*        />*/}
+                                    {/*    </LocalizationProvider>*/}
+
+                                    {/*</div>*/}
+                                    <div className='col-4'
+                                         style={{width: '48%'}}>
                                         <input
                                             type='text'
-                                            name='end_datetime'
+                                            name='image_link'
                                             className='form-control formInput'
-                                            value ={auction.end_datetime}
-                                            placeholder="End Date & Time"
+                                            value={auction.image_link}
+                                            placeholder='Image Link'
                                             onChange={handleValueChange}
-                                        ></input>
-                                    </div>
-                                    <div className='col-4'>
-                                        <input
-                                            type='text'
-                                            name='user_id'
-                                            className='form-control formInput'
-                                            value ={auction.user_id}
-                                            placeholder='User ID'
-                                            onChange={handleValueChange}
-                                        ></input>
-                                    </div>
+                                        />
                                 </div>
                                 {/* Row 2 of form */}
                                 <div className='row formRow'>
                                     <div className='col-4'>
                                         <input
                                             type='text'
-                                            name='inst_buy_enabled'
-                                            className='form-control formInput'
-                                            value ={auction.inst_buy_enabled}
-                                            placeholder='Enable Instant Buy'
-                                            onChange={handleValueChange}
-                                        ></input>
-                                    </div>
-                                    <div className='col-4'>
-                                        <input
-                                            type='text'
                                             name='inst_buy_price'
                                             className='form-control formInput'
-                                            value ={auction.inst_buy_price}
+                                            value={auction.inst_buy_price}
                                             placeholder='Instant Buy Price'
                                             onChange={handleValueChange}
-                                        ></input>
+                                        />
+                                    </div>
+                                    <div className='col-4'>
+                                        <div>
+                                            Instant Buy Enabled?
+                                        </div>
+                                        <input
+                                            type='checkbox'
+                                            name='inst_buy_enabled'
+                                            value={auction.inst_buy_enabled}
+                                            placeholder='Enable Instant Buy'
+                                            onChange={handleValueChange}
+                                        />
                                     </div>
                                     <div className='col-4'>
                                         <input
                                             type='text'
                                             name='min_bid'
                                             className='form-control formInput'
-                                            value ={auction.min_bid}
+                                            value={auction.min_bid}
                                             placeholder='Minimum Bid'
                                             onChange={handleValueChange}
-                                        ></input>
+                                        />
                                     </div>
                                 </div>
                                 {/* Row 3 of form */}
                                 <div className='row formRow'>
-                                    <div className='col'>
-                                        <input
-                                            type='text'
-                                            name='image_link'
-                                            className='form-control formInput'
-                                            value ={auction.image_link}
-                                            placeholder='Image Link'
-                                            onChange={handleValueChange}
-                                        ></input>
+
                                     </div>
                                 </div>
                                 {/* Row 4 of form */}
@@ -139,10 +153,10 @@ const InputListing = () => {
                                             rows={3}
                                             name='description'
                                             className='form-control formInput'
-                                            value ={auction.description}
+                                            value={auction.description}
                                             placeholder='Product Description'
                                             onChange={handleValueChange}
-                                        ></textarea>
+                                        />
 
                                     </div>
                                 </div>
@@ -151,7 +165,7 @@ const InputListing = () => {
                                 </button>
                             </form>
                         </div>
-                        <ToastContainer />
+                        <ToastContainer/>
                     </div>
                 </div>
             </div>

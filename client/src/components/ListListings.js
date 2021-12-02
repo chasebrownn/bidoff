@@ -144,7 +144,7 @@ class ListListings extends React.Component {
             )))
         }
     }
-
+    
     render() {
 
         return (
