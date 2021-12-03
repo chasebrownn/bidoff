@@ -47,17 +47,18 @@ app.get("/auctions", async (req, res) => {
                         select * from \
                         (select * from bids where bid_price = (select max(bid_price) from bids as b1 where bids.auction_id = b1.auction_id)) as max_bids \
                         FULL OUTER JOIN \
-                        (select * FROM auctions, items, users where auctions.item_id = items.item_id AND auctions.user_id = users.user_id) as current_auctions \
+                        (select * FROM auctions, items, users where auctions.item_id = items.item_id AND auctions.user_id = users.user_id and auctions.end_datetime < $1) as current_auctions \
                         on max_bids.auction_id = current_auctions.auction_id\
-                        ORDER BY current_auctions.title")
+                        ORDER BY current_auctions.title", [end_date])
             return res.json(data.rows)
         }else if (tag !== '0') {
+            console.log(tag)
             const data = await pool.query("select * from \
-            (select * from bids where bid_price = (select max(bid_price) from bids as b1 where bids.auction_id = b1.auction_id)) as max_bids \
-            FULL OUTER JOIN \
-            (select * FROM auctions, items, users, tageditems where auctions.item_id = items.item_id AND auctions.user_id = users.user_id AND \
-            items.item_id = tageditems.item_id and tageditems.tag_id = $1 and auctions.end_datetime > $2) as current_auctions \
-            on max_bids.auction_id = current_auctions.auction_id", [parseInt(tag), end_date])
+                    (select * from bids where bid_price = (select max(bid_price) from bids as b1 where bids.auction_id = b1.auction_id)) as max_bids \
+                    RIGHT OUTER JOIN \
+                    (select * FROM auctions, items, users, tageditems where auctions.item_id = items.item_id AND auctions.user_id = users.user_id AND \
+                    items.item_id = tageditems.item_id and tageditems.tag_id = $1 and auctions.end_datetime < $2) as current_auctions \
+                    on max_bids.auction_id = current_auctions.auction_id", [parseInt(tag), end_date])
             return res.json(data.rows)
         }
 

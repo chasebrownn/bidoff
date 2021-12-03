@@ -11,7 +11,7 @@ import 'react-toastify/dist/ReactToastify.min.css';
 import ReactDropdown from "react-dropdown";
 import 'react-dropdown/style.css';
 const InputListing = () => {
-    const nextMonth = new Date().setMonth(new Date().getMonth() + 1)
+    const nextMonth = new Date().setMonth(new Date().getMonth() + 1);
     const [auction, setAuction] = useState({
         title: '',
         description: '',
@@ -43,6 +43,7 @@ const InputListing = () => {
         const value = evt.value
         auction.category_id = evt.value
     }
+
     const onSubmitForm = async (e) => {
         console.log(auction);
         e.preventDefault();

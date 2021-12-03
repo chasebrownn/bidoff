@@ -8,7 +8,7 @@ import Box from '@mui/material/Box';
 
 class ListListings extends React.Component {
     prevMonth = new Date().setMonth(new Date().getMonth() - 1)
-    nextMonth = new Date().setMonth(new Date().getMonth() + 1)
+    nextMonth = new Date().setMonth(new Date().getMonth() + 2)
 
     constructor(props) {
         super(props);
