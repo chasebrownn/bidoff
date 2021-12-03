@@ -43,11 +43,21 @@ app.get("/auctions", async (req, res) => {
     try {
         const { tag, start_date, end_date } = req.query
         if ( tag === '0'){
-            const data = await pool.query("select * FROM auctions, items, users where auctions.item_id = items.item_id AND auctions.user_id = users.user_id AND auctions.end_datetime <= $1", [end_date])
+            const data = await pool.query("\
+                        select * from \
+                        (select * from bids where bid_price = (select max(bid_price) from bids as b1 where bids.auction_id = b1.auction_id)) as max_bids \
+                        FULL OUTER JOIN \
+                        (select * FROM auctions, items, users, tageditems where auctions.item_id = items.item_id AND auctions.user_id = users.user_id) as current_auctions \
+                        on max_bids.auction_id = current_auctions.auction_id")
+            console.log(data.rows)
             return res.json(data.rows)
         }else if (tag !== '0') {
-            const data = await pool.query("select * FROM auctions, items, users, tageditems where auctions.item_id = items.item_id AND auctions.user_id = users.user_id AND \
-                items.item_id = tageditems.item_id and tageditems.tag_id = $1", [parseInt(tag)])
+            const data = await pool.query("select * from \
+            (select * from bids where bid_price = (select max(bid_price) from bids as b1 where bids.auction_id = b1.auction_id)) as max_bids \
+            FULL OUTER JOIN \
+            (select * FROM auctions, items, users, tageditems where auctions.item_id = items.item_id AND auctions.user_id = users.user_id AND \
+            items.item_id = tageditems.item_id and tageditems.tag_id = $1 and auctions.end_datetime > $2) as current_auctions \
+            on max_bids.auction_id = current_auctions.auction_id", [parseInt(tag), end_date])
             return res.json(data.rows)
         }
 

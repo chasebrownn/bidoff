@@ -34,6 +34,7 @@ class ListListings extends React.Component {
             console.log(queryString);
             const response = await fetch("http://localhost:5000/auctions?" + queryString);
             const jsonData = await response.json();
+            console.log(jsonData);
             let auctions = [];
             jsonData.forEach(auction => {
                 auctions.push(auction);

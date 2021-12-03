@@ -16,7 +16,7 @@ const InputListing = () => {
         image_link: '',
         user_id: '1',
         end_datetime: new Date(nextMonth).toISOString().slice(0, 10),
-        min_bid: '',
+        current_bid: '',
         inst_buy_enabled: false,
         inst_buy_price: ''
     });
