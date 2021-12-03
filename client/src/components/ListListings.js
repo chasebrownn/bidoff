@@ -115,7 +115,8 @@ class ListListings extends React.Component {
         return event => {
             event.preventDefault();
             console.log(id);
-            this.bidAuctions(id, min_bid);
+            this.bidAuctions(id, min_bid)
+                .then(this.getAuctions);
         }
     }
     options = [
@@ -165,7 +166,7 @@ class ListListings extends React.Component {
                     <td>{auction.first_name}</td>
                     { auction.inst_buy_enabled ?
                         <td>
-                            <button className="btn btn-primary" onClick={this.handleBuyNow(auction.auction_id, auction.inst_buy_price)}>Buy Now</button>
+                            <button className="btn btn-primary" onClick={this.handleBuyNow(auction.auction_id, auction.inst_buy_price)}>Buy Now: {auction.inst_buy_price}</button>
                         </td>
                         :
                         <td>
@@ -173,7 +174,12 @@ class ListListings extends React.Component {
                         </td>
                     }
                     <td>
-                        <button className='submit-btn btn btn-primary contact-btn' onClick={this.handleBid(auction.auction_id, auction.min_bid)} type='submit'>Bid</button>
+                        <button className='submit-btn btn btn-primary contact-btn' onClick={this.handleBid(auction.auction_id, auction.min_bid)} type='submit'>
+                            Bid: {
+                            auction.bid_price ?
+                                parseFloat(auction.bid_price) + 1 :
+                                parseFloat(auction.min_bid)
+                        }</button>
                     </td>
                 </tr>
             )))

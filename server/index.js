@@ -47,9 +47,9 @@ app.get("/auctions", async (req, res) => {
                         select * from \
                         (select * from bids where bid_price = (select max(bid_price) from bids as b1 where bids.auction_id = b1.auction_id)) as max_bids \
                         FULL OUTER JOIN \
-                        (select * FROM auctions, items, users, tageditems where auctions.item_id = items.item_id AND auctions.user_id = users.user_id) as current_auctions \
-                        on max_bids.auction_id = current_auctions.auction_id")
-            console.log(data.rows)
+                        (select * FROM auctions, items, users where auctions.item_id = items.item_id AND auctions.user_id = users.user_id) as current_auctions \
+                        on max_bids.auction_id = current_auctions.auction_id\
+                        ORDER BY current_auctions.title")
             return res.json(data.rows)
         }else if (tag !== '0') {
             const data = await pool.query("select * from \
@@ -110,17 +110,20 @@ app.put("/buy", async (req, res) => {
 app.put("/bid", authenticateToken, async (req, res) => {
     console.log("PUT BID")
     try {
-        const { user_id, auction_id } = req.body;
+        const { user_id, auction_id, min_bid } = req.body;
         console.log(user_id, auction_id);
         const date = Date.now()
         // remove the auction from the auction table
         //(bider_id, auction_id , bid_price)
         const bid_price = await pool.query("SELECT MAX(Bids.bid_price) FROM Bids, Auctions WHERE Auctions.auction_id = Bids.auction_id AND Auctions.auction_id = $1", [auction_id]);
-        let parsed_bid = bid_price.rows[0].max//parseFloat(bid_price.rows[0].max)
-        parsed_bid++;
-        console.log("BID: ", parsed_bid)
-        
-
+        console.log(bid_price)
+        let parsed_bid = bid_price.rows[0].max
+        if ( !parsed_bid){
+            const min_bid = await pool.query("SELECT min_bid FROM Auctions WHERE auction_id = $1", [auction_id]);
+            parsed_bid = min_bid.rows[0].min_bid;
+        }else{
+            parsed_bid++;
+        }
         const new_bid_price = await pool.query("INSERT INTO Bids (bider_id, auction_id, bid_price) VALUES ($1, $2, $3) ON CONFLICT (bider_id, auction_id) DO UPDATE SET bid_price = $3", [req.user_id, parseInt(auction_id), parsed_bid]);
         res.send("Success")
     }
