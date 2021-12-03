@@ -67,11 +67,12 @@ class ListListings extends React.Component {
 
 	bidAuctions = async (auction_id, min_bid) => {
         try {
-            const response = await fetch("http://localhost:5000/buy/",
+            const token = JSON.parse(localStorage.getItem('auth_token'))
+            const response = await fetch("http://localhost:5000/bid/",
                 {
                 method: 'PUT',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/json', "authorization": token,
                 },
                 body: JSON.stringify({
                     user_id: 1,
@@ -109,10 +110,11 @@ class ListListings extends React.Component {
         }
     }
 
-    handleBid(id) {
+    handleBid(id, min_bid) {
         return event => {
             event.preventDefault();
             console.log(id);
+            this.bidAuctions(id, min_bid);
         }
     }
     options = [
@@ -170,7 +172,7 @@ class ListListings extends React.Component {
                         </td>
                     }
                     <td>
-                        <button className='submit-btn btn btn-primary contact-btn' onClick={this.handleBid(auction.auction_id)} type='submit'>Bid</button>
+                        <button className='submit-btn btn btn-primary contact-btn' onClick={this.handleBid(auction.auction_id, auction.min_bid)} type='submit'>Bid</button>
                     </td>
                 </tr>
             )))
