@@ -71,14 +71,19 @@ app.get("/auctions", async (req, res) => {
 app.post("/auction", authenticateToken, async (req, res) => {
     // This is an example of how to use authenticateToken as middleware and then get a user_id from it
     console.log(req.user_id)
+    console.log("Request body ", req.body)
     try {
-        const { title, description, image_link,  bad_user_id, end_datetime, min_bid, inst_buy_enabled, inst_buy_price } = req.body;
+        const { title, description, image_link,  bad_user_id, end_datetime, min_bid, inst_buy_enabled, inst_buy_price, category_id } = req.body;
         const user_id = req.user_id
-        console.log(title, description, image_link,  user_id, end_datetime, min_bid, inst_buy_enabled, inst_buy_price);
+        console.log(title, description, image_link,  user_id, end_datetime, min_bid, inst_buy_enabled, inst_buy_price, category_id);
         //adds to database
+
         const new_item = await pool.query("INSERT INTO Items (title, description, image_link) VALUES ($1, $2, $3) RETURNING item_id", [title, description, image_link]
         );
         const new_item_id = new_item.rows[0].item_id
+        if ( category_id !== 0){
+            await pool.query("INSERT INTO tageditems (tag_id, item_id) VALUES ($1, $2)", [category_id, new_item_id])
+        }
         console.log(user_id, new_item_id, end_datetime, min_bid, inst_buy_enabled, inst_buy_price)
         const new_auction = await pool.query("INSERT INTO Auctions (user_id, item_id, end_datetime, min_bid, inst_buy_enabled, inst_buy_price) VALUES ($1, $2, $3, $4, $5, $6) RETURNING item_id", 
         [user_id, new_item_id, end_datetime, min_bid, inst_buy_enabled, inst_buy_price]

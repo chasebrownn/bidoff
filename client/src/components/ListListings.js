@@ -150,7 +150,7 @@ class ListListings extends React.Component {
     ]
 
     auctionRendering() {
-        if (this.state.auctions .length === 0) {
+        if (this.state.auctions.length === 0) {
             return (
                 <div>
                     <h1>No auctions found</h1>

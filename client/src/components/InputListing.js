@@ -8,6 +8,8 @@ import 'react-toastify/dist/ReactToastify.min.css';
 // import {DatePicker, LocalizationProvider} from "@mui/lab";
 // import AdapterDateFns from "@mui/lab/AdapterDateFns";
 // import {TextField} from "@mui/material";
+import ReactDropdown from "react-dropdown";
+import 'react-dropdown/style.css';
 const InputListing = () => {
     const nextMonth = new Date().setMonth(new Date().getMonth() + 1)
     const [auction, setAuction] = useState({
@@ -18,7 +20,8 @@ const InputListing = () => {
         end_datetime: new Date(nextMonth).toISOString().slice(0, 10),
         current_bid: '',
         inst_buy_enabled: false,
-        inst_buy_price: ''
+        inst_buy_price: '',
+        category_id: 0
     });
 
     function handleValueChange(evt) {
@@ -34,6 +37,11 @@ const InputListing = () => {
             ...auction,
             inst_buy_enabled: !auction.inst_buy_enabled
         })
+    }
+
+    function handleDropdownChange(evt) {
+        const value = evt.value
+        auction.category_id = evt.value
     }
     const onSubmitForm = async (e) => {
         console.log(auction);
@@ -54,7 +62,35 @@ const InputListing = () => {
             console.error(err.message);
         }
     }
-
+    const options = [
+        {value: 0, label: 'Every Tag'},
+        {value: 1, label: 'Arts & Entertainment'},
+        {value: 2, label: 'Software'},
+        {value: 3, label: 'Vehicles & Parts'},
+        {value: 4, label: 'Sporting Goods'},
+        {value: 5, label: 'Health & Beauty'},
+        {value: 6, label: 'Baby & Toddler'},
+        {value: 7, label: 'Home & Garden'},
+        {value: 8, label: 'Religious & Ceremonial'},
+        {value: 9, label: 'Business & Industrial'},
+        {value: 10, label: 'Media'},
+        {value: 11, label: 'Mature'},
+        {value: 12, label: 'Food, Beverages & Tobacco'},
+        {value: 13, label: 'Electronics'},
+        {value: 14, label: 'Office Supplies'},
+        {value: 15, label: 'Apparel & Accessories'},
+        {value: 16, label: 'Luggage & Bags'},
+        {value: 17, label: 'Animals & Pet Supplies'},
+        {value: 18, label: 'Toys & Games'},
+        {value: 19, label: 'Hardware'},
+        {value: 20, label: 'Cameras & Optics'},
+        {value: 21, label: 'Furniture'},
+        {value: 22, label: 'Dog'},
+        {value: 23, label: 'Baseball'},
+        {value: 24, label: 'Food'},
+        {value: 25, label: 'Costume'},
+        {value: 26, label: 'Outdoors'}
+    ]
     return (
         <div id="contact" className='ContactForm contact-section'>
             <div className='container'>
@@ -165,6 +201,14 @@ const InputListing = () => {
                                         />
 
                                     </div>
+                                </div>
+                                <div>
+                                    <ReactDropdown
+                                        options={options}
+                                        onChange={handleDropdownChange}
+                                        name='category_id'
+                                        value={auction.category_id}
+                                        placeholder='Category' />
                                 </div>
                                 <button className='submit-btn btn btn-primary contact-btn' type='submit'>
                                     Add
