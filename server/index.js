@@ -96,6 +96,24 @@ app.put("/buy", async (req, res) => {
         console.error(err.message);
     }
 });
+
+app.put("/bid", async (req, res) => {
+    try {
+        const { user_id, auction_id } = req.body;
+        console.log(user_id, auction_id);
+        const date = Date.now()
+        // remove the auction from the auction table
+        const bid_price = await pool.query("SELECT FROM Bids, Auctions WHERE Auctions.auction_id = Bids.auction_id AND auction_id = $1 RETURNING bid_price", [auction_id]);
+        let parsed_bid = parseFloat(bid_price.rows[0].bid_price)
+        parsed_bid++;
+        const new_bid_price = await pool.query("INSERT INTO Bids (auction_id, bid_price) VALUES $1, $2 RETURNING bid_price", [parseInt(auction_id), parsed_bid]);
+        res.send("Success")
+    }
+    catch (err) {
+        console.error(err.message);
+    }
+});
+
 // User Endpoints:
 app.get("/users", async (req, res) => {
     try {

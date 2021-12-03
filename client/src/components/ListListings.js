@@ -64,6 +64,28 @@ class ListListings extends React.Component {
             console.error(err.message);
         }
     }
+
+	bidAuctions = async (auction_id, min_bid) => {
+        try {
+            const response = await fetch("http://localhost:5000/buy/",
+                {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    user_id: 1,
+                    auction_id: auction_id,
+                    bid_price: min_bid
+                })
+            });
+            await this.getAuctions();
+
+        } catch (err) {
+            console.error(err.message);
+        }
+    }
+
     handleSelect = (newTag) => {
         this.setState({tag_filter: newTag.value}, this.getAuctions);
     }
