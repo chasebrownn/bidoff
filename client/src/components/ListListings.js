@@ -65,6 +65,29 @@ class ListListings extends React.Component {
             console.error(err.message);
         }
     }
+
+	bidAuctions = async (auction_id, min_bid) => {
+        try {
+            const token = JSON.parse(localStorage.getItem('auth_token'))
+            const response = await fetch("http://localhost:5000/bid/",
+                {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json', "authorization": token,
+                },
+                body: JSON.stringify({
+                    user_id: 1,
+                    auction_id: auction_id,
+                    bid_price: min_bid
+                })
+            });
+            await this.getAuctions();
+
+        } catch (err) {
+            console.error(err.message);
+        }
+    }
+
     handleSelect = (newTag) => {
         this.setState({tag_filter: newTag.value}, this.getAuctions);
     }
@@ -88,10 +111,11 @@ class ListListings extends React.Component {
         }
     }
 
-    handleBid(id) {
+    handleBid(id, min_bid) {
         return event => {
             event.preventDefault();
             console.log(id);
+            this.bidAuctions(id, min_bid);
         }
     }
     options = [
@@ -149,7 +173,7 @@ class ListListings extends React.Component {
                         </td>
                     }
                     <td>
-                        <button className='submit-btn btn btn-primary contact-btn' onClick={this.handleBid(auction.auction_id)} type='submit'>Bid</button>
+                        <button className='submit-btn btn btn-primary contact-btn' onClick={this.handleBid(auction.auction_id, auction.min_bid)} type='submit'>Bid</button>
                     </td>
                 </tr>
             )))

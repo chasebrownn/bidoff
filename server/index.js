@@ -106,6 +106,29 @@ app.put("/buy", async (req, res) => {
         console.error(err.message);
     }
 });
+
+app.put("/bid", authenticateToken, async (req, res) => {
+    console.log("PUT BID")
+    try {
+        const { user_id, auction_id } = req.body;
+        console.log(user_id, auction_id);
+        const date = Date.now()
+        // remove the auction from the auction table
+        //(bider_id, auction_id , bid_price)
+        const bid_price = await pool.query("SELECT MAX(Bids.bid_price) FROM Bids, Auctions WHERE Auctions.auction_id = Bids.auction_id AND Auctions.auction_id = $1", [auction_id]);
+        let parsed_bid = bid_price.rows[0].max//parseFloat(bid_price.rows[0].max)
+        parsed_bid++;
+        console.log("BID: ", parsed_bid)
+        
+
+        const new_bid_price = await pool.query("INSERT INTO Bids (bider_id, auction_id, bid_price) VALUES ($1, $2, $3) ON CONFLICT (bider_id, auction_id) DO UPDATE SET bid_price = $3", [req.user_id, parseInt(auction_id), parsed_bid]);
+        res.send("Success")
+    }
+    catch (err) {
+        console.error(err.message);
+    }
+});
+
 // User Endpoints:
 app.get("/users", async (req, res) => {
     try {
